@@ -1,5 +1,8 @@
 # KopiKode Container
 
+
+[![Build Status](https://travis-ci.org/somy/Container.svg?branch=master)](https://travis-ci.org/somy/Container)
+
 A PHP array container for simplification usability
 
 ## Requirement
