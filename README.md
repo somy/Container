@@ -12,7 +12,7 @@ Add requirements to your composer json files
 
 
      "require": {
-        "kopikode/container": "2.*"
+        "kopikode/container": "*"
     }
 
 ## Manual
@@ -21,21 +21,28 @@ PHP Native array access
     
     // Set
     $arr = array();
-    $arr['user']['administrator'] = 'administrator';
+    $arr['user']['administrator'] = 'Somy A';
 
     // Get
     $admin = $arr['user']['administrator];
 
 Container Access
+
     // Initiate 
     $container = new \KopiKode\Container;
 
     // Set
-    $container['user.administrator] = 'administrator';
+    $container['user.administrator] = 'Somy A';
     
     // Get
     $admin = $container['user.administrator'];
 
-Nested (get upper level )
+Nested Access (get upper level )
     
     $users = $container['user'];
+
+will reproduce 
+    
+    array (
+        'administrator' => 'Somy A'
+    )
