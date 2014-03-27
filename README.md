@@ -15,7 +15,7 @@ Add requirements to your composer json files
 
 
      "require": {
-        "kopikode/container": "*"
+        "kopikode/container": "dev-master"
     }
 
 ## Manual
