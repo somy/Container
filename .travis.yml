@@ -9,7 +9,7 @@ php:
 
 before_script:
   - composer self-update
-  - composer install
+  - composer update
   - COMPOSER_ROOT_VERSION=dev-master composer dump-autoload
 
 script: phpunit --coverage-text
