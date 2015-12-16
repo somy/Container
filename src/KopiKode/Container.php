@@ -2,22 +2,26 @@
 
 namespace KopiKode;
 
-class Container implements \ArrayAccess, \IteratorAggregate, \Countable
+use \Interop\Container\ContainerInterface;
+use \KopiKode\Exception\InvalidArgumentException;
+use \KopiKode\Exception\InvalidIdentifierException;
+
+class Container implements ContainerInterface, \ArrayAccess, \IteratorAggregate, \Countable
 {
     /**
-     * Array container 
-     * 
+     * Array container
+     *
      * @type array
      */
     protected $properties;
-    
+
     public function __construct(array $defaults = array())
     {
         foreach ($defaults as $key => $value) {
             $this[$key] = $value;
         }
     }
-    
+
     public function set($offset, $value)
     {
         $offset = self::canonicalize($offset);
@@ -67,7 +71,7 @@ class Container implements \ArrayAccess, \IteratorAggregate, \Countable
 
             $data = $this->properties;
             $retValue = null;
-            
+
             foreach ($arrOffset as $key) {
                 if (isset($data[$key])) {
                     $data = $data[$key];
@@ -77,18 +81,26 @@ class Container implements \ArrayAccess, \IteratorAggregate, \Countable
                     break;
                 }
             }
-            
+
             if ($retValue ===  null) {
-                throw new \InvalidArgumentException("Invalid properties identifier ( ". $offset . " )");
+                throw new InvalidIdentifierException("Invalid properties identifier ( ". $offset . " )");
             }
-            
-            return $retValue;
+
+            if (method_exists($retValue, '__invoke')) {
+                return $retvalue($this);
+            } else {
+                return $retValue;
+            }
         } else {
             if (!$this->has($offset)) {
-                throw new \InvalidArgumentException("Invalid properties identifier ( ". $offset . " )");
-            } 
-            
-            return $this->properties[$offset];
+                throw new InvalidIdentifierException("Invalid properties identifier ( ". $offset . " )");
+            }
+
+            if (method_exists($this->properties[$offset], '__invoke')) {
+                return $this->properties[$offset]($this);
+            } else {
+                return $this->properties[$offset];
+            }
         }
     }
 
@@ -141,11 +153,11 @@ class Container implements \ArrayAccess, \IteratorAggregate, \Countable
             unset($this->properties[self::canonicalize($offset)]);
         }
     }
-    
+
     public static function canonicalize($key)
     {
         if (!preg_match('/[a-z0-9\.\_]+/', $key)) {
-            throw new InvalidArgumentException("Invalid properties identifier ( " . $key . " )");
+            throw new InvalidIdentifierException("Invalid properties identifier ( " . $key . " )");
         }
 
         return strtolower($key);
