@@ -51,8 +51,7 @@ will reproduce
     )
 
 ### Service / Callable Dependency Injection ( added on v.1.1.0 )
-
-    With Service Dependency Injection, you can store callable which return same Instance of callable. Default parameters always container it self
+With Service Dependency Injection, you can store callable which return same Instance of callable. Default parameters always container it self
 
     $container = new \KopiKode\Container;
     $container['session'] = function ($c) {
